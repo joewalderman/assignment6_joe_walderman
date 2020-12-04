@@ -1,0 +1,49 @@
+---
+title: "a6_task2_joe_walderman"
+author: "Joe Walderman"
+date: "12/3/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+## Reading in data
+
+```{r}
+survey <- read.csv(here("data", "conservation_survey.csv"))
+
+survey_clean <- survey %>% 
+  clean_names()
+
+survey_env <- survey_clean %>% 
+  select(env_id, pol_or) %>%
+  mutate(party = case_when(
+    pol_or %in% c(1, 2, 3) ~ "Conservative",
+    pol_or %in% c(5, 6, 7) ~ "Liberal",
+    na.rm = TRUE #Fix this
+  )) %>% 
+  mutate(enviro = case_when(
+    env_id == 1 ~ "Yes",
+    env_id == 2 ~ "No",
+    env_id == 3 ~ "Unsure"
+  ))
+
+survey_env %>% 
+  count(party, enviro)
+```
+
+```{r}
+counts <- survey_env %>% 
+  tabyl(party, enviro)
+
+proportions <- counts %>% 
+  adorn_percentages() %>% 
+  adorn_pct_formatting(digits = 2) %>% 
+  adorn_ns()
+```
+
