@@ -86,6 +86,3 @@ lizards_ttest_tidy <- tidy(lizards_ttest)
 hares_effsize <- cohen.d(lizards_CNTE, lizards_CNUN, na.rm = TRUE)
 ```
 
-
-
-
