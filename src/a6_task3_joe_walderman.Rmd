@@ -1,0 +1,91 @@
+---
+title: "a6_task3_joe_walderman"
+author: "Joe Walderman"
+date: "12/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(janitor)
+library(broom)
+library(stargazer)
+library(GGally)
+library(kableExtra)
+library(effsize)
+```
+
+
+```{r}
+lizards <- read.csv(here("data", "lizards.csv")) %>% 
+  clean_names()
+```
+
+```{r}
+lizards_subset <- lizards %>% 
+  select(spp, sex, total_length)
+```
+
+```{r}
+lizards_f <- lizards_subset %>% 
+  filter(sex == "F",
+         spp %in% c("CNUN", "CNTE"))
+
+ggplot(data = lizards_f, aes(x = spp, y = total_length)) +
+  geom_boxplot(aes(fill = spp)) +
+  labs(x = "Species",
+       y = "Length (mm)",
+       title = "Lizard Length by Species") +
+  theme(legend.position = "none") 
+```
+
+```{r}
+lizards_table <- lizards_f %>% 
+  group_by(spp) %>% 
+  summarize(mean_weight = round(mean(total_length, na.rm = TRUE),2),
+            sd_weight = round(sd(total_length, na.rm = TRUE),2),
+            sample_size = n()) %>%
+  kable(col.names = c("Species", "Mean Weight (g)", "Standard Deviation (g)", "Sample Size")) %>% 
+  kable_styling(bootstrap_options = "striped", full_width = FALSE)
+  
+lizards_table
+```
+
+```{r}
+hist(lizards_f, x = "total_length")
+qqnorm(lizards_f)
+```
+
+```{r}
+#Pulling vectors of weight for male and female juvenile hares
+lizards_CNTE <- lizards_f %>% 
+  filter(spp == "CNTE") %>% 
+  pull(total_length)
+
+lizards_CNUN<- lizards_f %>% 
+  filter(spp == "CNUN") %>% 
+  pull(total_length)
+
+# Getting means and sds for male and female juvenile hares
+CNTE_mean <- mean(lizards_CNTE, na.rm = TRUE)
+CNUN_mean <- mean(lizards_CNUN, na.rm = TRUE)
+CNTE_sd <- sd(lizards_CNTE, na.rm = TRUE)
+CNUN_sd <- sd(lizards_CNUN, na.rm = TRUE)
+```
+
+```{r}
+# T-test for male and female juvenile hares
+
+lizards_ttest <- t.test(lizards_CNTE, lizards_CNUN, na.rm = TRUE)
+
+lizards_ttest_tidy <- tidy(lizards_ttest)
+
+# Cohen's d effect size for male and female juvenile hares
+hares_effsize <- cohen.d(lizards_CNTE, lizards_CNUN, na.rm = TRUE)
+```
+
+
+
+
