@@ -47,7 +47,11 @@ lizards_table <- lizards_f %>%
   summarize(mean_weight = round(mean(total_length, na.rm = TRUE),2),
             sd_weight = round(sd(total_length, na.rm = TRUE),2),
             sample_size = n()) %>%
-  kable(col.names = c("Species", "Mean Weight (g)", "Standard Deviation (g)", "Sample Size")) %>% 
+  mutate(spp = case_when(
+    spp == "CNTE" ~ "Colorado Chekered Lizards",
+    spp == "CNUN" ~ "Desert Grassland Lizard"
+  )) %>% 
+  kable(col.names = c("Species", "Mean Total Lenth (mm)", "Standard Deviation (mm)", "Sample Size"), digits = 2) %>% 
   kable_styling(bootstrap_options = "striped", full_width = FALSE)
   
 lizards_table
@@ -65,7 +69,12 @@ lizards_CNUN<- lizards_f %>%
   filter(spp == "CNUN") %>% 
   pull(total_length)
 
-# Getting means and sds for male and female juvenile hares
+hist(lizards_CNTE)
+qqnorm(lizards_CNTE)
+hist(lizards_CNUN)
+qqnorm(lizards_CNUN)
+
+# Getting means and sds for ...
 CNTE_mean <- mean(lizards_CNTE, na.rm = TRUE)
 CNUN_mean <- mean(lizards_CNUN, na.rm = TRUE)
 CNTE_sd <- sd(lizards_CNTE, na.rm = TRUE)
@@ -73,13 +82,12 @@ CNUN_sd <- sd(lizards_CNUN, na.rm = TRUE)
 ```
 
 ```{r}
-# T-test for male and female juvenile hares
-
+# T-test for ...
 lizards_ttest <- t.test(lizards_CNTE, lizards_CNUN, na.rm = TRUE)
-
 lizards_ttest_tidy <- tidy(lizards_ttest)
 
-# Cohen's d effect size for male and female juvenile hares
-hares_effsize <- cohen.d(lizards_CNTE, lizards_CNUN, na.rm = TRUE)
+# Cohen's d effect size for...
+lizards_effsize <- cohen.d(lizards_CNTE, lizards_CNUN, na.rm = TRUE)
 ```
 
+The absolute difference in the means is `r round(male_mean,2) - round(female_mean,2)` and the Welch's two sample t-test yeilds a p-value of t(`r round(hares_ttest_tidy$parameter,2)`) = `r round(hares_ttest_tidy$statistic,2)`, p = 0.007) which indicates there is a 0.7% chance that one might take sample two samples from the same population with means that are at least as different as the means observed here. This may suggest that the difference in means is significant. However, the somewhat small Cohen's d Effect size `r round(hares_effsize$estimate,2)` does not corroborate with these results.The validity of these tests is based on assumptions of normality, however, and histograms and QQ plots for male juvenile hares suggest that the distribution for that data may not be normal and satisfy these assumptions.
