@@ -1,0 +1,28 @@
+---
+title: "a6_task4_joe_walderman"
+author: "Joe Walderman"
+date: "12/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(here)
+library(janitor)
+library(broom)
+library(stargazer)
+library(GGally)
+library(kableExtra)
+library(effsize)
+```
+
+```{r}
+lake <- read_csv(here("data", "mono_lake_annual_levels.csv"))
+```
+
+```{r}
+
+```
+
+

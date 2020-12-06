@@ -53,10 +53,7 @@ lizards_table <- lizards_f %>%
 lizards_table
 ```
 
-```{r}
-hist(lizards_f, x = "total_length")
-qqnorm(lizards_f)
-```
+
 
 ```{r}
 #Pulling vectors of weight for male and female juvenile hares

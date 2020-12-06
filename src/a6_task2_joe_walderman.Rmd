@@ -11,6 +11,7 @@ library(tidyverse)
 library(here)
 library(janitor)
 library(broom)
+library(kableExtra)
 ```
 
 ## Reading in and cleaning data
@@ -36,7 +37,7 @@ survey_env <- survey_clean %>%
     env_id == 2 ~ "No",
     env_id == 3 ~ "Unsure"
   )) %>% 
-  filter(affiliation %in% c("Conservative", "Liberal")) # excluding observations with NA affiliation values
+  drop_na() # excluding observations with NA affiliation values
 ```
 
 
@@ -49,13 +50,17 @@ survey_env %>%
 
 ```{r}
 survey_counts <- survey_env %>% 
-  tabyl(affiliation, enviro) # reordering to yes, no, unsure
+  tabyl(affiliation, enviro)
 
 survey_proportions <- survey_counts %>% 
   adorn_percentages() %>% # showing percentage of people surveyed from each party responding no, unsure, or yes to environmentalist question
   adorn_pct_formatting(digits = 2) %>% # rounding decimals
   adorn_ns() %>% # actual counts in each cell as well in parenthesis
-  select(Yes, No, Unsure) # reordering columns
+  select(1,4,2,3) #reordering columns
+
+survey_proportions %>% 
+  kable(col.names = c("", "Yes", "No", "Unsure")) %>% 
+  kable_styling(bootstrap_options = "striped", full_width = FALSE)
 ```
 
 ## Contingency table
