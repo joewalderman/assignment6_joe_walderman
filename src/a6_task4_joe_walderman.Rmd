@@ -15,14 +15,27 @@ library(stargazer)
 library(GGally)
 library(kableExtra)
 library(effsize)
+library(plotly)
 ```
 
 ```{r}
-lake <- read_csv(here("data", "mono_lake_annual_levels.csv"))
+monolake <- read_csv(here("data", "mono_lake_annual_levels.csv"), skip = 5) %>% 
+  clean_names() %>% 
+  rename("lake_level" = "lake_level_feet_above_sea_level")
 ```
 
 ```{r}
+area <- monolake %>% 
+  ggplot(aes(x = year, y = lake_level)) +
+  geom_line()
 
+area
+```
+
+```{r}
+area <- ggplotly(area)
+
+area
 ```
 
 
