@@ -567,14 +567,10 @@ summary {
 <div id="intro-and-data" class="section level2">
 <h2>Intro and Data</h2>
 <p>This dataset is from an online survey of 1,331 Americans accross the country collected in 2017 covering a variety of topics. This report utilizes two of these topics, one saying “I considering myself an environmentalist” and providing response options, the other asking “how do you self-identify politically?”. A Chi-Square test is utilized to assess if there is an association between political affiliation and if a person considers themselves an environmentalist.</p>
-<p><strong>Table 1</strong> Counts and Proportions of conservative and liberal respondents who indicated “Yes”, “No”, and “Unsure” to the prompted statement &quot;I consider myself an environmentalist. Over 50% of those who identified as conservative responded that they were explicitly not environmentalists, while over 50% of environmentalists responded that they explicitly were environmentalists.</p>
-<pre><code>##    affiliation enviro   n
-## 1 Conservative     No 318
-## 2 Conservative Unsure 102
-## 3 Conservative    Yes 213
-## 4      Liberal     No 128
-## 5      Liberal Unsure 114
-## 6      Liberal    Yes 281</code></pre>
+</div>
+<div id="analysis" class="section level2">
+<h2>Analysis</h2>
+<p><strong>Table 1</strong> Counts and Proportions of conservative and liberal respondents who indicated “Yes”, “No”, and “Unsure” to the prompted statement &quot;I consider myself an environmentalist. Over 50% of those who identified as conservative responded that they were explicitly not environmentalists, while over 50% of environmentalists responded that they explicitly were environmentalists. Data: Andrews Forest LTER Site and C. Batavia. 2019.</p>
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -622,11 +618,11 @@ Liberal
 </tr>
 </tbody>
 </table>
-<p>The majority of people who identified as liberal identify as environmentalists (<code>r(survey_proportions$Yes[2]</code>) There is a significant association between political affiliation and identification as an environmentalist (<span class="math inline">\(\chi\)</span><sup>2</sup>(2) = 81.24, <em>p</em> = 0), meaning these two variables are dependant.</p>
-<p>What are we asking? Are site and tail breakage independent? In other words: is there a significant association between site and tail breakage?</p>
+<p>The majority of people who identified as liberal identify as environmentalists and the majority of people who identified as conservative explicitly do not identify environmentalists. There is a significant association between political affiliation and identification as an environmentalist (<span class="math inline">\(\chi\)</span><sup>2</sup>(2) = 81.24, <em>p</em> = 0), meaning these two variables are dependent.</p>
 </div>
 <div id="data-citation" class="section level2">
 <h2>Data Citation</h2>
+<p>Andrews Forest LTER Site and C. Batavia. 2019. Influences on charitable giving for conservation: Online survey data of 1,331 respondents across the US, August 2017 ver 3. Environmental Data Initiative. <a href="https://doi.org/10.6073/pasta/926e6270e324a1322a900da14d38b96c" class="uri">https://doi.org/10.6073/pasta/926e6270e324a1322a900da14d38b96c</a> (Accessed 2020-12-08).</p>
 </div>
 
 

@@ -16,26 +16,97 @@ library(GGally)
 library(kableExtra)
 library(effsize)
 library(plotly)
+library(lubridate)
 ```
 
 ```{r}
 monolake <- read_csv(here("data", "mono_lake_annual_levels.csv"), skip = 5) %>% 
   clean_names() %>% 
   rename("lake_level" = "lake_level_feet_above_sea_level")
+
 ```
 
 ```{r}
-area <- monolake %>% 
-  ggplot(aes(x = year, y = lake_level)) +
-  geom_line()
 
-area
+ggplot(data = monolake, aes(x = year, y = lake_level)) +
+  geom_line(size = 0.1) +
+  geom_point(alpha = .1) +
+  geom_ribbon(aes(ymin = -Inf, ymax = lake_level),
+                fill = "blue",
+                alpha = .2) +
+   labs(
+    x = "Year",
+    y = "Lake Level (ft above sea level)",
+    title = "Change in Mono Lake Levels \n 1850 - 2017",
+    caption = "Figure 1.:"
+  ) +
+  geom_segment(aes(x = min(1850),
+                   xend = max(2017),
+                   y = 6377,
+                   yend = 6377),
+             color = "orange", 
+             size = .5) +
+  geom_segment(aes(x = min(1850),
+                   xend = max(2017),
+                   y = 6360,
+                   yend = 6360),
+             color = "red", 
+             size = .5) +
+  geom_segment(aes(x = min(1850),
+                   xend = max(2017),
+                   y = 6350,
+                   yend = 6350),
+             color = "green", 
+             size = .5) +
+  annotate(geom = "text", 
+           x = 2017, 
+           y = 6377,
+           label = "Land Bridge Formation",
+           size = 3,
+           hjust = 0) +
+  annotate(geom = "text", 
+           x = 2017, 
+           y = 6360, 
+           label = "Reduced Food Supply",
+           size = 3,
+           hjust = 0) +
+  annotate(geom = "text", 
+           x = 2017, 
+           y = 6350, 
+           label = "Acute Impact",
+           size = 3,
+           hjust = 0) +
+  annotate(geom = "point",
+           x = 1994,
+           y = 6374.6,
+           size = 2.5) +
+  annotate(geom = "text",
+           x = 1995,
+           y = 6367,
+           label = "State Water Board \n Decision 1631 (1995)",
+           size = 2.7) +
+  annotate(geom = "point",
+           x = 1941,
+           y = 6417,
+           size = 2.5) +
+    annotate(geom = "text",
+           x = 1941,
+           y = 6422,
+           label = "Water Diversions (1941)",
+           size = 2.7,
+           hjust = 0) +
+  scale_x_continuous(limits = c(1850, 2040), 
+                     breaks = c(1850, 1900, 1950, 2000), 
+                     expand = c(0,0)) +
+  scale_y_continuous(limits = c(6340,6450)) +
+  coord_cartesian(clip = "off") +
+  theme(plot.caption = element_text(hjust = 1),
+        plot.margin = unit(c(1,2,1,1), "lines"),
+        plot.title = element_text(hjust = 0),
+        axis.text = element_text(family = "serif"),
+        axis.title = element_text(family = "serif", face = "bold"),
+        panel.background = element_rect(fill = "white"))
 ```
 
-```{r}
-area <- ggplotly(area)
 
-area
-```
-
-
+**Figure 1** 

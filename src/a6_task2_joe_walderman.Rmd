@@ -47,14 +47,14 @@ survey_env <- survey_clean %>%
   drop_na() # excluding observations with NA affiliation values
 ```
 
+## Analysis
 
-**Table 1** Counts and Proportions of conservative and liberal respondents who indicated "Yes", "No", and "Unsure" to the prompted statement "I consider myself an environmentalist. Over 50% of those who identified as conservative responded that they were explicitly not environmentalists, while over 50% of environmentalists responded that they explicitly were environmentalists. 
+**Table 1** Counts and Proportions of conservative and liberal respondents who indicated "Yes", "No", and "Unsure" to the prompted statement "I consider myself an environmentalist. Over 50% of those who identified as conservative responded that they were explicitly not environmentalists, while over 50% of environmentalists responded that they explicitly were environmentalists. Data: Andrews Forest LTER Site and C. Batavia. 2019.
 
 ```{r}
 ## Find counts and proportions of liberal and conservative identifying survey responders responding no, unsure, or yes to a question about whether they consinder themselves an environmentalist 
 
-survey_env %>% 
-  count(affiliation, enviro)
+#survey_env %>% count(affiliation, enviro)
 
 survey_counts <- survey_env %>% 
   tabyl(affiliation, enviro)
@@ -74,12 +74,14 @@ survey_proportions %>%
 
 
 
+
+
 ```{r}
 ## Contingency table
 
 survey_ct <- survey_counts %>% 
   column_to_rownames(var = "affiliation") %>% #Pulling column information into rownames so now I just have two columns and ready to be fed into chi sqrd
-  select(Yes, No, Unsure ) # Reordering columns
+  select(Yes, No, Unsure) # Reordering columns
 ```
 
 
@@ -93,9 +95,9 @@ survey_x2_tidy <- tidy(survey_x2)
 
 ```
 
-The majority of people who identified as liberal identify as environmentalists  (`r round(survey_proportions$Yes,2)`) There is a significant association between political affiliation and identification as an environmentalist ($\chi$^2^(`r round(survey_x2_tidy$parameter,1)`) = `r round(survey_x2_tidy$statistic,2)`, *p* = `r round(survey_x2_tidy$p.value,3)`), meaning these two variables are dependant. 
+The majority of people who identified as liberal identify as environmentalists and the majority of people who identified as conservative explicitly do not identify environmentalists. There is a significant association between political affiliation and identification as an environmentalist ($\chi$^2^(`r round(survey_x2_tidy$parameter,1)`) = `r round(survey_x2_tidy$statistic,2)`, *p* = `r round(survey_x2_tidy$p.value,3)`), meaning these two variables are dependent.
 
-What are we asking? Are site and tail breakage independent? In other words: is there a significant association between site and tail breakage? 
 
 ## Data Citation
 
+Andrews Forest LTER Site and C. Batavia. 2019. Influences on charitable giving for conservation: Online survey data of 1,331 respondents across the US, August 2017 ver 3. Environmental Data Initiative. https://doi.org/10.6073/pasta/926e6270e324a1322a900da14d38b96c (Accessed 2020-12-08).
