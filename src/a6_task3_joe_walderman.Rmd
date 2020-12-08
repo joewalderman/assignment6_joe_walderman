@@ -51,7 +51,7 @@ ggplot(data = lizards_f, aes(x = spp, y = total_length)) +
   theme(legend.position = "none") 
 ```
 
-**Figure 2.** Total lentgh (mm) observations for female lizards of species Colorado Checkered and Desert Grassland. The width of the plots indicate the number of observations for a particular weight. Box endpoints indicate the 25th and 75th percentile values; the black line and black point within the box indicate the median and mean value for each sex, respectively. Data: Lightfoot, 2017.
+**Figure 2.** Total length (mm) observations for female lizards of species Colorado Checkered and Desert Grassland. The width of the plots indicate the number of observations for a particular weight. Box endpoints indicate the 25th and 75th percentile values; the black line and black point within the box indicate the median and mean value for each sex, respectively. Data: Lightfoot, 2017.
 
 
 
