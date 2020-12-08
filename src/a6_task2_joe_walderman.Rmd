@@ -16,20 +16,23 @@ library(kableExtra)
 
 ## Intro and Data
 
-This dataset is from an online survey of 1,331 Americans accross the country collected in 2017 covering a variety of topics. This report utilizes two of these topics, one sayiing "I considering myself an environmentalist" and providing response options, the other asking "how do you self-identify politically?". A Chi-Square test is utilized to assess if there is an association between political affiliation and if a person considers theself an environmentalist.
+This dataset is from an online survey of 1,331 Americans accross the country collected in 2017 covering a variety of topics. This report utilizes two of these topics, one saying "I considering myself an environmentalist" and providing response options, the other asking "how do you self-identify politically?". A Chi-Square test is utilized to assess if there is an association between political affiliation and if a person considers themselves an environmentalist.
 
-## Reading in and cleaning data
+
 
 ```{r}
+## Reading in and cleaning data
+
 survey <- read.csv(here("data", "conservation_survey.csv"))
 
 survey_clean <- survey %>% 
   clean_names()
 ```
 
-## Making a subset and mutating
 
 ```{r}
+## Making a subset and mutating
+
 survey_env <- survey_clean %>% 
   select(env_id, pol_or) %>%
   mutate(affiliation = case_when(
@@ -45,14 +48,14 @@ survey_env <- survey_clean %>%
 ```
 
 
-## Find counts and proportions of liberal and conservative identifying survey responders responding no, unsure, or yes to a question about whether they consinder themselves an environmentalist 
-
-```{r, include=FALSE}
-survey_env %>% 
-  count(affiliation, enviro)
-```
+**Table 1** Counts and Proportions of conservative and liberal respondents who indicated "Yes", "No", and "Unsure" to the prompted statement "I consider myself an environmentalist. Over 50% of those who identified as conservative responded that they were explicitly not environmentalists, while over 50% of environmentalists responded that they explicitly were environmentalists. 
 
 ```{r}
+## Find counts and proportions of liberal and conservative identifying survey responders responding no, unsure, or yes to a question about whether they consinder themselves an environmentalist 
+
+survey_env %>% 
+  count(affiliation, enviro)
+
 survey_counts <- survey_env %>% 
   tabyl(affiliation, enviro)
 
@@ -62,25 +65,37 @@ survey_proportions <- survey_counts %>%
   adorn_ns() %>% # actual counts in each cell as well in parenthesis
   select(1,4,2,3) #reordering columns
 
+#Styling table
+
 survey_proportions %>% 
   kable(col.names = c("", "Yes", "No", "Unsure")) %>% 
   kable_styling(bootstrap_options = "striped", full_width = FALSE)
 ```
 
-## Contingency table
+
 
 ```{r}
+## Contingency table
+
 survey_ct <- survey_counts %>% 
-  column_to_rownames(var = "affiliation") %>% # pulling column information into rownames so now I just have two columns and ready to be fed into chi sqrd
+  column_to_rownames(var = "affiliation") %>% #Pulling column information into rownames so now I just have two columns and ready to be fed into chi sqrd
   select(Yes, No, Unsure ) # Reordering columns
 ```
 
-## Chi-square test: is there an association between political affiliation and if a person considers themself an environmentalist? In other words, are political affiliation and identification as an environemntalist independent?
+
 
 ```{r}
+## Chi-square test: is there an association between political affiliation and if a person considers themself an environmentalist? In other words, are political affiliation and identification as an environmentalist independent?
+
 survey_x2 <- chisq.test(survey_ct)
-survey_tidy <- tidy(survey_x2)
+survey_x2_tidy <- tidy(survey_x2)
+
+
 ```
 
-### There is a significant association between political affiliation and identification as an environmentalist  ($\chi$^2^(`r survey_tidy$parameter`) = `r round(survey_tidy$statistic,2)`, *p* = `r round(survey_tidy$p.value,3)`).
+The majority of people who identified as liberal identify as environmentalists  (`r round(survey_proportions$Yes,2)`) There is a significant association between political affiliation and identification as an environmentalist ($\chi$^2^(`r round(survey_x2_tidy$parameter,1)`) = `r round(survey_x2_tidy$statistic,2)`, *p* = `r round(survey_x2_tidy$p.value,3)`), meaning these two variables are dependant. 
+
+What are we asking? Are site and tail breakage independent? In other words: is there a significant association between site and tail breakage? 
+
+## Data Citation
 

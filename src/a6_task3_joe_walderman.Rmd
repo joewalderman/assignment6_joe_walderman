@@ -1,12 +1,12 @@
 ---
-title: "a6_task3_joe_walderman"
+title: "Comparing Mean Length for Female Lizards of Two Different Species"
 author: "Joe Walderman"
 date: "12/4/2020"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(here)
 library(janitor)
@@ -17,6 +17,9 @@ library(kableExtra)
 library(effsize)
 ```
 
+## Intro and Data
+
+In this analysis I use [data](https://doi.org/10.6073/pasta/ff37b4cace16a9943575f3fd7067064e) collected by David Lightfoot et al in the northern Chihuahuan Desert. The data contains observations on species, sex, recapture status, total length in mm, weight in grams, and whether tail is broken or whole among other information. For this analysis I created a data visualization and table to compare total length between two species and performed a T-test and Cohen's d test to compare means and measure effect size. Further, I use histograms and QQ-plots to check on the assumptions of the hypothesis testing. These tests look to answer the question is there significant difference in total length difference in mean total length between female lizards for the two species.
 
 ```{r}
 lizards <- read.csv(here("data", "lizards.csv")) %>% 
@@ -28,6 +31,8 @@ lizards_subset <- lizards %>%
   select(spp, sex, total_length)
 ```
 
+## Analysis
+
 ```{r}
 lizards_f <- lizards_subset %>% 
   filter(sex == "F",
@@ -35,12 +40,23 @@ lizards_f <- lizards_subset %>%
 
 ggplot(data = lizards_f, aes(x = spp, y = total_length)) +
   geom_boxplot(aes(fill = spp)) +
+  stat_summary(
+    fun = mean,
+    geom = "point"
+    ) +
   labs(x = "Species",
        y = "Length (mm)",
        title = "Lizard Length by Species") +
+  scale_x_discrete(labels= c("CNTE"= "Colorado Checkered Lizard", "CNUN"="Desert Grassland Lizard")) +
   theme(legend.position = "none") 
 ```
 
+**Figure 2.** Total lentgh (mm) observations for female lizards of species Colorado Checkered and Desert Grassland. The width of the plots indicate the number of observations for a particular weight. Box endpoints indicate the 25th and 75th percentile values; the black line and black point within the box indicate the median and mean value for each sex, respectively. Data: Lightfoot, 2017.
+
+
+
+
+**Table 1.** Descriptive statistics (mean, standard deviation, and sample size) for Colorado Checkered Lizards and Desert Grassland Lizards. Data: Lightfoot, 2017.
 ```{r}
 lizards_table <- lizards_f %>% 
   group_by(spp) %>% 
@@ -69,12 +85,12 @@ lizards_CNUN<- lizards_f %>%
   filter(spp == "CNUN") %>% 
   pull(total_length)
 
-hist(lizards_CNTE)
-qqnorm(lizards_CNTE)
-hist(lizards_CNUN)
-qqnorm(lizards_CNUN)
+# hist(lizards_CNTE) # seems skewed to the right
+# qqnorm(lizards_CNTE) #not very linear
+# hist(lizards_CNUN) #also seems kind of skewed right
+# qqnorm(lizards_CNUN) # more linear
 
-# Getting means and sds for ...
+# Getting means and sds for lizard total length by species
 CNTE_mean <- mean(lizards_CNTE, na.rm = TRUE)
 CNUN_mean <- mean(lizards_CNUN, na.rm = TRUE)
 CNTE_sd <- sd(lizards_CNTE, na.rm = TRUE)
@@ -90,4 +106,12 @@ lizards_ttest_tidy <- tidy(lizards_ttest)
 lizards_effsize <- cohen.d(lizards_CNTE, lizards_CNUN, na.rm = TRUE)
 ```
 
-The absolute difference in the means is `r round(male_mean,2) - round(female_mean,2)` and the Welch's two sample t-test yeilds a p-value of t(`r round(hares_ttest_tidy$parameter,2)`) = `r round(hares_ttest_tidy$statistic,2)`, p = 0.007) which indicates there is a 0.7% chance that one might take sample two samples from the same population with means that are at least as different as the means observed here. This may suggest that the difference in means is significant. However, the somewhat small Cohen's d Effect size `r round(hares_effsize$estimate,2)` does not corroborate with these results.The validity of these tests is based on assumptions of normality, however, and histograms and QQ plots for male juvenile hares suggest that the distribution for that data may not be normal and satisfy these assumptions.
+## Summary
+
+The mean total length of the observed female Colorado Checkered lizards (`r round(CNTE_mean,1)` mm) was greater than the mean total length of female Desert Grassland Lizards (`r round(CNUN_mean,1)` mm).The Welch's two sample t-test yields a p-value of t(`r round(lizards_ttest_tidy$parameter,2)`) = `r round(lizards_ttest_tidy$statistic,2)`, p < 0.001) which indicates there is a negligible chance of randomly selecting two samples from populations with the same mean that are this different by chance. They are almost certainly from populations with different mean lizard lengths. The absolute difference in the means (`r round(CNTE_mean,2) - round(CNUN_mean,2)` mm), and the large effect size (Cohen's *d* = `r round(lizards_effsize$estimate,2)`), along with the p-value contribute to the conclusion that there is significant difference in total length difference in mean total length between female lizards for the two species.
+
+
+## Data Citation
+
+Lightfoot, D. 2017. Lizard pitfall trap data (LTER-II, LTER-III) ver 36. Environmental Data Initiative. https://doi.org/10.6073/pasta/ff37b4cace16a9943575f3fd7067064e (Accessed 2020-12-07).
+

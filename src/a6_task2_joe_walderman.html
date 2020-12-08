@@ -566,16 +566,15 @@ summary {
 
 <div id="intro-and-data" class="section level2">
 <h2>Intro and Data</h2>
-<p>This dataset is from an online survey of 1,331 Americans accross the country collected in 2017 covering a variety of topics. This report utilizes two of these topics, one sayiing “I considering myself an environmentalist” and providing response options, the other asking “how do you self-identify politically?”. A Chi-Square test is utilized to assess if there is an association between political affiliation and if a person considers theself an environmentalist.</p>
-</div>
-<div id="reading-in-and-cleaning-data" class="section level2">
-<h2>Reading in and cleaning data</h2>
-</div>
-<div id="making-a-subset-and-mutating" class="section level2">
-<h2>Making a subset and mutating</h2>
-</div>
-<div id="find-counts-and-proportions-of-liberal-and-conservative-identifying-survey-responders-responding-no-unsure-or-yes-to-a-question-about-whether-they-consinder-themselves-an-environmentalist" class="section level2">
-<h2>Find counts and proportions of liberal and conservative identifying survey responders responding no, unsure, or yes to a question about whether they consinder themselves an environmentalist</h2>
+<p>This dataset is from an online survey of 1,331 Americans accross the country collected in 2017 covering a variety of topics. This report utilizes two of these topics, one saying “I considering myself an environmentalist” and providing response options, the other asking “how do you self-identify politically?”. A Chi-Square test is utilized to assess if there is an association between political affiliation and if a person considers themselves an environmentalist.</p>
+<p><strong>Table 1</strong> Counts and Proportions of conservative and liberal respondents who indicated “Yes”, “No”, and “Unsure” to the prompted statement &quot;I consider myself an environmentalist. Over 50% of those who identified as conservative responded that they were explicitly not environmentalists, while over 50% of environmentalists responded that they explicitly were environmentalists.</p>
+<pre><code>##    affiliation enviro   n
+## 1 Conservative     No 318
+## 2 Conservative Unsure 102
+## 3 Conservative    Yes 213
+## 4      Liberal     No 128
+## 5      Liberal Unsure 114
+## 6      Liberal    Yes 281</code></pre>
 <table class="table table-striped" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -623,15 +622,11 @@ Liberal
 </tr>
 </tbody>
 </table>
+<p>The majority of people who identified as liberal identify as environmentalists (<code>r(survey_proportions$Yes[2]</code>) There is a significant association between political affiliation and identification as an environmentalist (<span class="math inline">\(\chi\)</span><sup>2</sup>(2) = 81.24, <em>p</em> = 0), meaning these two variables are dependant.</p>
+<p>What are we asking? Are site and tail breakage independent? In other words: is there a significant association between site and tail breakage?</p>
 </div>
-<div id="contingency-table" class="section level2">
-<h2>Contingency table</h2>
-</div>
-<div id="chi-square-test-is-there-an-association-between-political-affiliation-and-if-a-person-considers-themself-an-environmentalist-in-other-words-are-political-affiliation-and-identification-as-an-environemntalist-independent" class="section level2">
-<h2>Chi-square test: is there an association between political affiliation and if a person considers themself an environmentalist? In other words, are political affiliation and identification as an environemntalist independent?</h2>
-<div id="there-is-a-significant-association-between-political-affiliation-and-identification-as-an-environmentalist-chi22-81.24-p-0." class="section level3">
-<h3>There is a significant association between political affiliation and identification as an environmentalist (<span class="math inline">\(\chi\)</span><sup>2</sup>(2) = 81.24, <em>p</em> = 0).</h3>
-</div>
+<div id="data-citation" class="section level2">
+<h2>Data Citation</h2>
 </div>
 
 
