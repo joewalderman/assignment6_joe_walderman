@@ -1,12 +1,12 @@
 ---
-title: "a6_task4_joe_walderman"
+title: "Change in Mono Lake Levels 1850 - 2017"
 author: "Joe Walderman"
 date: "12/4/2020"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(here)
 library(janitor)
@@ -37,43 +37,44 @@ ggplot(data = monolake, aes(x = year, y = lake_level)) +
    labs(
     x = "Year",
     y = "Lake Level (ft above sea level)",
-    title = "Change in Mono Lake Levels \n 1850 - 2017",
-    caption = "Figure 1.:"
-  ) +
+    title = "Change in Mono Lake Levels \n 1850 - 2017") +
   geom_segment(aes(x = min(1850),
                    xend = max(2017),
                    y = 6377,
                    yend = 6377),
-             color = "orange", 
-             size = .5) +
+             color = "brown", 
+             size = 1,
+             linetype = "dotted") +
   geom_segment(aes(x = min(1850),
                    xend = max(2017),
                    y = 6360,
                    yend = 6360),
              color = "red", 
-             size = .5) +
+             size = 1,
+             linetype = "dotted") +
   geom_segment(aes(x = min(1850),
                    xend = max(2017),
                    y = 6350,
                    yend = 6350),
-             color = "green", 
-             size = .5) +
+             color = "darkorange", 
+             size = 1,
+             linetype = "dotted") +
   annotate(geom = "text", 
            x = 2017, 
            y = 6377,
-           label = "Land Bridge Formation",
+           label = "Predators Can Access Birds",
            size = 3,
            hjust = 0) +
   annotate(geom = "text", 
            x = 2017, 
            y = 6360, 
-           label = "Reduced Food Supply",
+           label = "Reduced Food Supply for Birds",
            size = 3,
            hjust = 0) +
   annotate(geom = "text", 
            x = 2017, 
            y = 6350, 
-           label = "Acute Impact",
+           label = "Acute Population Decline",
            size = 3,
            hjust = 0) +
   annotate(geom = "point",
@@ -98,15 +99,16 @@ ggplot(data = monolake, aes(x = year, y = lake_level)) +
   scale_x_continuous(limits = c(1850, 2040), 
                      breaks = c(1850, 1900, 1950, 2000), 
                      expand = c(0,0)) +
-  scale_y_continuous(limits = c(6340,6450)) +
+  scale_y_continuous(limits = c(6340,6440)) +
   coord_cartesian(clip = "off") +
-  theme(plot.caption = element_text(hjust = 1),
-        plot.margin = unit(c(1,2,1,1), "lines"),
+  theme(plot.margin = unit(c(1,5,1,1), "lines"),
         plot.title = element_text(hjust = 0),
         axis.text = element_text(family = "serif"),
         axis.title = element_text(family = "serif", face = "bold"),
-        panel.background = element_rect(fill = "white"))
+        panel.background = element_rect(fill = "white"),
+        axis.line = element_line(color="black"))
 ```
 
 
-**Figure 1** 
+**Figure 1.** Evolution of the measured lake level in feet above sea level from 1950 to 2017, recorded from the Mono Basin Clearinghouse. A couple of important events relative to Mono Lake water levels are labeled with points and year. In 1941, the LADWP started to divert water from tributaries of Mono Lake to Los Angeles, resulting in dramatic volume loss and salinity increase. In 1994 the State Water Board mandated a minimum lake level of 6392 ft to be returned and ordered DEP to restore the habitat. This habitat is home to many aquatic birds and reduced lake levels have major implications for their survival. Three critical levels are illustrated, the brown line signifying the point at which predators of the bird can reach them via a newly emerged land bridge (6,377 ft). The red line signifies the lake level associated with a salinity of 150g/L which results in a reduction in food sources for the birds (6,360 ft). The orange line indicates the level at which the impact of reduced food sources for the birds would be acute (6,350 ft)."
+  )
